@@ -2,6 +2,7 @@
 
 import os
 import sys
+import platform
 import traceback
 
 import six
@@ -23,6 +24,22 @@ def six_decode(txt, char='utf-8', errors='replace'):
 
 def getKodiVersion():
     return int(xbmc.getInfoLabel("System.BuildVersion").split(".")[0])
+
+def get_current_platform():
+
+    platform_name = platform.uname()
+    _system = platform_name[0]
+    # _sysname = platform_name[1]
+    # _sysrelease = platform_name[2]
+    _sysversion = platform_name[3]
+    # _sysmachine = platform_name[4]
+    # _sysprocessor = platform_name[5]
+    is_64bits = sys.maxsize > 2**32
+    # pf = platform.python_version() # pylint disable=snake-case
+
+    _64bits = '64bits' if is_64bits else '32bits'
+
+    return f"{_system} {_sysversion} ({_64bits})"
 
 
 addon = xbmcaddon.Addon
@@ -392,5 +409,3 @@ def checkArtwork():
         return
     except:
         return
-
-
